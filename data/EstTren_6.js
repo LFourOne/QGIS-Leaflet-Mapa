@@ -1,0 +1,1 @@
+var json_EstTren_6 = {"type":"FeatureCollection","name":"EstTren_6","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[{"type":"Feature","properties":{"idEstacion":"1","nombre":"Biotren Línea 1 Mercado","demanda":null},"geometry":{"type":"Point","coordinates":[-73.115466536394251,-36.711763277896317]}}]}
