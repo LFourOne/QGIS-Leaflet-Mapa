@@ -6,6 +6,7 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="icon" href="images/icon.png">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -18,7 +19,7 @@
         <title>Solutiva Consultores - P178-TEL</title>
     </head>
     <body class="overpass-font">
-        <nav>
+        <header>
             <section class="navsectionone">
                 <div id="solutivalogo">
                     <a href="index.html"><img src="images/solutiva.png" alt="Solutiva Consultores"></a>
@@ -32,7 +33,7 @@
                     <span id="text-comunne-two">Talcahuano</span>
                 </div>
             </div>
-        </nav>
+        </header>
         <div class="total-container">
             <section class="left-graph-section">
                 <div class="left-charts">
@@ -114,7 +115,18 @@
                     <div id="map"></div>
                 </section>
                 <section class="bottom-chart-section">
-
+                    <div class="bottom-container">
+                        <span id="bottom-information1"></span>
+                        <span id="bottom-result1"></span>
+                    </div>
+                    <div class="bottom-container">
+                        <span id="bottom-information2"></span>
+                        <span id="bottom-result2"></span>
+                    </div>
+                    <div class="bottom-container">
+                        <span id="bottom-information3"></span>
+                        <span id="bottom-result3"></span>
+                    </div>
                 </section>
             </div>
         </div>
@@ -1913,14 +1925,6 @@
             var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
             popup.setContent(updatedContent);
         }
-        function toggleLayer(layerName) {
-            var layer = window[layerName];
-            if (map.hasLayer(layer)) {
-                map.removeLayer(layer);
-            } else {
-                map.addLayer(layer);
-            }
-        }
 
         function style_AreaEstudio_22_0() {
             return {
@@ -3320,6 +3324,52 @@
             }
             }
 
+
+            let bottomInformation1 = document.getElementById("bottom-information1");
+            let bottomResult1 = document.getElementById("bottom-result1");
+
+            let bottomInformation2 = document.getElementById("bottom-information2");
+            let bottomResult2 = document.getElementById("bottom-result2");
+
+            let bottomInformation3 = document.getElementById("bottom-information3");
+            let bottomResult3 = document.getElementById("bottom-result3");
+
+
+
+
+
+            function toggleLayer(layerName) {
+            var layer = window[layerName];
+            if (map.hasLayer(layer)) {
+                map.removeLayer(layer);
+                bottomInformation1.textContent = "";
+                bottomResult1.textContent = "";
+                bottomInformation2.textContent = "";
+                bottomResult2.textContent = "";
+                bottomInformation3.textContent = "";
+                bottomResult3.textContent = "";
+            } else {
+                map.addLayer(layer);
+                bottomInformation1.textContent = "";
+                bottomResult1.textContent = "";
+                bottomInformation1.textContent = "";
+                bottomResult1.textContent = "";
+                bottomInformation2.textContent = "";
+                bottomResult2.textContent = "";
+                bottomInformation3.textContent = "";
+                bottomResult3.textContent = "";
+                if (layerName == 'layer_Pavimentos_45'){
+                    bottomInformation1.textContent = "Pavimento:"
+                    bottomResult1.textContent = "N° de Pavimento Total = 862 \n Pavimento Bueno = 169 \n Pavimento Regular = 392 \n Pavimento Malo = 272"
+                    
+                    bottomInformation2.textContent = "Hormigón:"
+                    bottomResult2.textContent = "N° de Pavimento Total = 640 \n Hormigón Bueno = 130 \n Hormigón Regular = 285 \n Hormigón Malo = 225"
+
+                    bottomInformation3.textContent = "Asfalto:"
+                    bottomResult3.textContent = "N° de Asfalto Total = 193 \n Asfalto Bueno = 39 \n Asfalto Regular = 107 \n Asfalto Malo = 47"
+                }
+            }
+        }
         </script>
     </body>
 </html>
