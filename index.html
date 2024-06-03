@@ -6,138 +6,118 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <style>
-            #solutivalogo{
-                margin-top: 30px;
-                margin-left: 40px;
-            }
-            #title{
-                display: flex;
-                justify-content: center;
-            }
-            .map-section{
-                display: flex;
-                justify-content: center;
-                margin-top: 5px;
-                margin-right: 30px;
-            }
-            .btn-list{
-                display: flex;
-                flex-direction: column;
-                gap: 3px;
-                overflow-y: scroll;
-                max-height: 700px;
-                border: 1px solid gray;
-            }
-            .categories{
-                display: flex;
-                flex-direction: column;
-                border: 1px solid black;
-            }
-            .category-title{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: #d2e769;
-            }
-            .btn{
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                height: 40px;
-                padding: 20px;
-                gap: 30px;
-            }
-            .btn.presionado {
-                background-color: lightgrey;
-                color: black;
-            }
-            #map{
-                height: 700px;
-                width: 900px;
-                border: 2px solid gray;
-            }
-        </style>
-        <title>P178-TEL</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <title>Solutiva Consultores - P178-TEL</title>
     </head>
-    <body>
+    <body class="overpass-font">
         <nav>
-            <div id="solutivalogo">
-                <img src="solutiva.png" alt="Solutiva Consultores">
+            <section class="navsectionone">
+                <div id="solutivalogo">
+                    <a href="index.html"><img src="images/solutiva.png" alt="Solutiva Consultores"></a>
+                </div>
+                <div id="title"><h1>P178-TEL SHAPE</h1></div>
+            </section>
+            <div class="commune">
+                <div id="map-pin"><img src="images/map-pin.svg" alt="Map-Pin"></div>
+                <div class="commune-text">
+                    <span id="text-comunne-one">Zona de Estudio</span>
+                    <span id="text-comunne-two">Talcahuano</span>
+                </div>
             </div>
         </nav>
-        <div id="title"><h1>P178-TEL SHAPE</h1></div>
-        <section class="map-section">
-            <div class="btn-list">
-                <div class="categories">
-                    <div class="category-title"><p>Superficie</p></div>
-                    <button class="btn" onclick="toggleLayer('layer_PuntosdeEncuentro_47'); togglePresionado(this)"> <img src="legend/PuntosdeEncuentro_47.png" alt="#"> Puntos de Encuentro</button>
-                    <button class="btn" onclick="toggleLayer('layer_ViasdeEvacuacin_46'); togglePresionado(this)"><img src="legend/ViasdeEvacuacin_46.png" alt="#"> Vias de Evacuación</button>
-                    <button class="btn" onclick="toggleLayer('layer_Pavimentos_45'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Pavimentos</button>
-                    <button class="btn" onclick="toggleLayer('layer_Escaleras_44'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Escaleras</button>
-                    <button class="btn" onclick="toggleLayer('layer_Veredas_43'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Veredas</button>
-                    <button class="btn" onclick="toggleLayer('layer_AreasVerdes_42'); togglePresionado(this)"><img src="legend/AreasVerdes_42_ParqueTumbes1.png" alt="#"> Areas Verdes</button>
-                    <button class="btn" onclick="toggleLayer('layer_Proyectos_41'); togglePresionado(this)"><img src="legend/Proyectos_41.png" alt="#"> Proyectos</button>
-                    <button class="btn" onclick="toggleLayer('layer_Equipamiento_40'); togglePresionado(this)"><img src="legend/Equipamiento_40_Educacional3.png" alt="#"> Equipamiento</button>
+        <div class="total-container">
+            <section class="left-graph-section">
+                <div class="left-charts">
+                    <canvas id="chartOne"></canvas>
                 </div>
-                <div class="categories">
-                    <div class="category-title"><p>Example</p></div>
-                    <button class="btn" onclick="toggleLayer('layer_Trazado_TXC_39'); togglePresionado(this)"><img src="legend/Trazado_TXC_39.png" alt="#"> Trazado TXC</button>
-                    <button class="btn" onclick="toggleLayer('layer_RutasCamiones_38'); togglePresionado(this)"><img src="legend/RutasCamiones_38.png" alt="#"> Rutas Camiones</button>
-                    <button class="btn" onclick="toggleLayer('layer_RedAt_37'); togglePresionado(this)"><img src="legend/RedAt_37.png" alt="#"> RedAt</button>
-                    <button class="btn" onclick="toggleLayer('layer_TorresAT_36'); togglePresionado(this)"><img src="legend/TorresAT_36.png" alt="#"> Torres AT</button>
-                    <button class="btn" onclick="toggleLayer('layer_LineasOficialesPRC_35'); togglePresionado(this)"><img src="legend/LineasOficialesPRC_35.png" alt="#"> Lineas Oficiales PRC</button>
-                    <button class="btn" onclick="toggleLayer('layer_VERTIENTESOSM_34'); togglePresionado(this)"><img src="legend/VERTIENTESOSM_34.png" alt="#"> Vertientes OSM</button>
-                    <button class="btn" onclick="toggleLayer('layer_VERTIENTESIDOM_33'); togglePresionado(this)"><img src="legend/VERTIENTESIDOM_33.png" alt="#"> Vertientes IDOM</button>
-                    <button class="btn" onclick="toggleLayer('layer_QUEBRADASPMALL_32'); togglePresionado(this)"><img src="legend/QUEBRADASPMALL_32.png" alt="#"> Quebradas Mall</button>
-                    <button class="btn" onclick="toggleLayer('layer_Obras_Hid_31'); togglePresionado(this)"><img src="legend/Obras_Hid_31.png" alt="#"> Obras Hid</button>
+                <div class="left-charts">
+                    <canvas id="chartTwo"></canvas>
                 </div>
-                <div class="categories">
-                    <div class="category-title"><p>Example 2</p></div>
-                    <button class="btn" onclick="toggleLayer('layer_LAGUNA_30'); togglePresionado(this)"><img src="legend/LAGUNA_30.png" alt="#"> Laguna</button>
-                    <button class="btn" onclick="toggleLayer('layer_LAGUNAPOLI_29'); togglePresionado(this)"><img src="legend/LAGUNAPOLI_29.png" alt="#"> Laguna POLI</button>
-                    <button class="btn" onclick="toggleLayer('layer_INFRAESTAGUASSERVIDAS_28'); togglePresionado(this)"><img src="legend/INFRAESTAGUASSERVIDAS_28.png" alt="#"> Infraestructura Aguas Servidas</button>
-                    <button class="btn" onclick="toggleLayer('layer_INFRAESTAGUAPOTABLE_27'); togglePresionado(this)"><img src="legend/INFRAESTAGUAPOTABLE_27.png" alt="#"> Infraestructura Agua Potable</button>
-                    <button class="btn" onclick="toggleLayer('layer_Cursos_agua_26'); togglePresionado(this)"><img src="legend/Cursos_agua_26.png" alt="#"> Cursos Agua</button>
-                    <button class="btn" onclick="toggleLayer('layer_Hitos_Google_25'); togglePresionado(this)"><img src="legend/Hitos_Google_25.png" alt="#"> Hitos Google</button>
-                    <button class="btn" onclick="toggleLayer('layer_ESTACIONESDETREN_24'); togglePresionado(this)"><img src="legend/ESTACIONESDETREN_24.png" alt="#"> Estaciones de Tren</button>
-                    <button class="btn" onclick="toggleLayer('layer_Campamentos_23'); togglePresionado(this)"><img src="legend/Campamentos_23.png" alt="#"> Campamentos</button>
-                    <button class="btn" onclick="toggleLayer('layer_AreaEstudio_22'); togglePresionado(this)"><img src="legend/AreaEstudio_22.png" alt="#"> Área de Estudio</button>
-                    <button class="btn" onclick="toggleLayer('layer_ZonaTransporte_21'); togglePresionado(this)"><img src="legend/ZonaTransporte_21_RestoTalcahuano2.png" alt="#"> Zona Transporte</button>
-                    <button class="btn" onclick="toggleLayer('layer_TermPort_20'); togglePresionado(this)"><img src="legend/TermPort_20.png" alt="#"> TermPort</button>
-                    <button class="btn" onclick="toggleLayer('layer_TermRetTP_19'); togglePresionado(this)"><img src="legend/TermRetTP_19.png" alt="#"> TermRetTP</button>
+                <div class="left-charts">
+                    <canvas id="chartThree"></canvas>
                 </div>
-                <div class="categories">
-                    <div class="category-title"><p>Example 3</p></div>
-                    <button class="btn" onclick="toggleLayer('layer_TermTerre_18'); togglePresionado(this)"><img src="legend/TermTerre_18.png" alt="#"> TermTerre</button>
-                    <button class="btn" onclick="toggleLayer('layer_SenaVert_17'); togglePresionado(this)"><img src="legend/SenaVert_17.png" alt="#"> SenaVert</button>
-                    <button class="btn" onclick="toggleLayer('layer_RutasTP_16'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Rutas TP</button>
-                    <button class="btn" onclick="toggleLayer('layer_RedVialPRC_15'); togglePresionado(this)"><img src="legend/RedVialPRC_15_2.png" alt="#"> Red Vial PRC</button>
-                    <button class="btn" onclick="toggleLayer('layer_redPeaton_14'); togglePresionado(this)"><img src="legend/redPeaton_14.png" alt="#"> Red Peatón</button>
-                    <button class="btn" onclick="toggleLayer('layer_redAuto_13'); togglePresionado(this)"><img src="legend/redAuto_13.png" alt="#"> Red Auto</button>
-                    <button class="btn" onclick="toggleLayer('layer_Pavimento_12'); togglePresionado(this)"><img src="legend/Pavimento_12.png" alt="#"> Pavimento</button>
-                    <button class="btn" onclick="toggleLayer('layer_ParaderoTP_11'); togglePresionado(this)"><img src="legend/ParaderoTP_11_Bueno0.png" alt="#"> ParaderoTP</button>
-                    <button class="btn" onclick="toggleLayer('layer_LineasTP_10'); togglePresionado(this)"><img src="legend/LineasTP_10_2.png" alt="#"> Lineas TP</button>
-                </div>
-                <div class="categories">
-                    <div class="category-title"><p>Example 3</p></div>
-                <button class="btn" onclick="toggleLayer('layer_LneaFerrea_9'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Línea Férrea</button>
-                <button class="btn" onclick="toggleLayer('layer_InterSema_8'); togglePresionado(this)"><img src="legend/InterSema_8.png" alt="#"> InterSema</button>
-                <button class="btn" onclick="toggleLayer('layer_InterPrio_7'); togglePresionado(this)"><img src="legend/InterPrio_7.png" alt=""> InterPrio</button>
-                <button class="btn" onclick="toggleLayer('layer_EstTren_6'); togglePresionado(this)"><img src="legend/EstTren_6.png" alt="#"> EstTren</button>
-                <button class="btn" onclick="toggleLayer('layer_EstacioBici_5'); togglePresionado(this)"><img src="legend/EstacioBici_5.png" alt="#"> EstacioBici</button>
-                <button class="btn" onclick="toggleLayer('layer_EstacionaVia_4'); togglePresionado(this)"><img src="legend/EstacionaVia_4_Gratuito0.png" alt="#"> EstacionaVia</button>
-                <button class="btn" onclick="toggleLayer('layer_CruceFerreo_3'); togglePresionado(this)"><img src="legend/CruceFerreo_3.png" alt="#"> Cruce Férreo</button>
-                <button class="btn" onclick="toggleLayer('layer_Cicloruta_2'); togglePresionado(this)"><img src="legend/Cicloruta_2.png" alt="#"> Ciclo Ruta</button>
-                <button class="btn" onclick="toggleLayer('layer_Accidentes_1'); togglePresionado(this)"><img src="legend/Accidentes_1.png" alt="#"> Accidentes</button>
-                </div>
+            </section>
+            <div class="right-subcontainer">
+                <section class="map-section">
+                    <div class="btn-list">
+                        <div class="categories">
+                            <div class="category-title"><p>Example 1</p></div>
+                            <button class="btn" onclick="toggleLayer('layer_PuntosdeEncuentro_47'); togglePresionado(this)"> <img src="legend/PuntosdeEncuentro_47.png" alt="#"> Puntos de Encuentro</button>
+                            <button class="btn" onclick="toggleLayer('layer_ViasdeEvacuacin_46'); togglePresionado(this)"><img src="legend/ViasdeEvacuacin_46.png" alt="#"> Vias de Evacuación</button>
+                            <button class="btn" onclick="toggleLayer('layer_Pavimentos_45'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Pavimentos</button>
+                            <button class="btn" onclick="toggleLayer('layer_Escaleras_44'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Escaleras</button>
+                            <button class="btn" onclick="toggleLayer('layer_Veredas_43'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Veredas</button>
+                            <button class="btn" onclick="toggleLayer('layer_AreasVerdes_42'); togglePresionado(this)"><img src="legend/AreasVerdes_42_ParqueTumbes1.png" alt="#"> Areas Verdes</button>
+                            <button class="btn" onclick="toggleLayer('layer_Proyectos_41'); togglePresionado(this)"><img src="legend/Proyectos_41.png" alt="#"> Proyectos</button>
+                            <button class="btn" onclick="toggleLayer('layer_Equipamiento_40'); togglePresionado(this)"><img src="legend/Equipamiento_40_Educacional3.png" alt="#"> Equipamiento</button>
+                        </div>
+                        <div class="categories">
+                            <div class="category-title"><p>Example 2</p></div>
+                            <button class="btn" onclick="toggleLayer('layer_Trazado_TXC_39'); togglePresionado(this)"><img src="legend/Trazado_TXC_39.png" alt="#"> Trazado TXC</button>
+                            <button class="btn" onclick="toggleLayer('layer_RutasCamiones_38'); togglePresionado(this)"><img src="legend/RutasCamiones_38.png" alt="#"> Rutas Camiones</button>
+                            <button class="btn" onclick="toggleLayer('layer_RedAt_37'); togglePresionado(this)"><img src="legend/RedAt_37.png" alt="#"> RedAt</button>
+                            <button class="btn" onclick="toggleLayer('layer_TorresAT_36'); togglePresionado(this)"><img src="legend/TorresAT_36.png" alt="#"> Torres AT</button>
+                            <button class="btn" onclick="toggleLayer('layer_LineasOficialesPRC_35'); togglePresionado(this)"><img src="legend/LineasOficialesPRC_35.png" alt="#"> Lineas Oficiales PRC</button>
+                            <button class="btn" onclick="toggleLayer('layer_VERTIENTESOSM_34'); togglePresionado(this)"><img src="legend/VERTIENTESOSM_34.png" alt="#"> Vertientes OSM</button>
+                            <button class="btn" onclick="toggleLayer('layer_VERTIENTESIDOM_33'); togglePresionado(this)"><img src="legend/VERTIENTESIDOM_33.png" alt="#"> Vertientes IDOM</button>
+                            <button class="btn" onclick="toggleLayer('layer_QUEBRADASPMALL_32'); togglePresionado(this)"><img src="legend/QUEBRADASPMALL_32.png" alt="#"> Quebradas Mall</button>
+                            <button class="btn" onclick="toggleLayer('layer_Obras_Hid_31'); togglePresionado(this)"><img src="legend/Obras_Hid_31.png" alt="#"> Obras Hid</button>
+                        </div>
+                        <div class="categories">
+                            <div class="category-title"><p>Example 3</p></div>
+                            <button class="btn" onclick="toggleLayer('layer_LAGUNA_30'); togglePresionado(this)"><img src="legend/LAGUNA_30.png" alt="#"> Laguna</button>
+                            <button class="btn" onclick="toggleLayer('layer_LAGUNAPOLI_29'); togglePresionado(this)"><img src="legend/LAGUNAPOLI_29.png" alt="#"> Laguna POLI</button>
+                            <button class="btn" onclick="toggleLayer('layer_INFRAESTAGUASSERVIDAS_28'); togglePresionado(this)"><img src="legend/INFRAESTAGUASSERVIDAS_28.png" alt="#"> Infraestructura Aguas Servidas</button>
+                            <button class="btn" onclick="toggleLayer('layer_INFRAESTAGUAPOTABLE_27'); togglePresionado(this)"><img src="legend/INFRAESTAGUAPOTABLE_27.png" alt="#"> Infraestructura Agua Potable</button>
+                            <button class="btn" onclick="toggleLayer('layer_Cursos_agua_26'); togglePresionado(this)"><img src="legend/Cursos_agua_26.png" alt="#"> Cursos Agua</button>
+                            <button class="btn" onclick="toggleLayer('layer_Hitos_Google_25'); togglePresionado(this)"><img src="legend/Hitos_Google_25.png" alt="#"> Hitos Google</button>
+                            <button class="btn" onclick="toggleLayer('layer_ESTACIONESDETREN_24'); togglePresionado(this)"><img src="legend/ESTACIONESDETREN_24.png" alt="#"> Estaciones de Tren</button>
+                            <button class="btn" onclick="toggleLayer('layer_Campamentos_23'); togglePresionado(this)"><img src="legend/Campamentos_23.png" alt="#"> Campamentos</button>
+                            <button class="btn" onclick="toggleLayer('layer_AreaEstudio_22'); togglePresionado(this)"><img src="legend/AreaEstudio_22.png" alt="#"> Área de Estudio</button>
+                            <button class="btn" onclick="toggleLayer('layer_ZonaTransporte_21'); togglePresionado(this)"><img src="legend/ZonaTransporte_21_RestoTalcahuano2.png" alt="#"> Zona Transporte</button>
+                            <button class="btn" onclick="toggleLayer('layer_TermPort_20'); togglePresionado(this)"><img src="legend/TermPort_20.png" alt="#"> TermPort</button>
+                            <button class="btn" onclick="toggleLayer('layer_TermRetTP_19'); togglePresionado(this)"><img src="legend/TermRetTP_19.png" alt="#"> TermRetTP</button>
+                        </div>
+                        <div class="categories">
+                            <div class="category-title"><p>Example 4</p></div>
+                            <button class="btn" onclick="toggleLayer('layer_TermTerre_18'); togglePresionado(this)"><img src="legend/TermTerre_18.png" alt="#"> TermTerre</button>
+                            <button class="btn" onclick="toggleLayer('layer_SenaVert_17'); togglePresionado(this)"><img src="legend/SenaVert_17.png" alt="#"> SenaVert</button>
+                            <button class="btn" onclick="toggleLayer('layer_RutasTP_16'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Rutas TP</button>
+                            <button class="btn" onclick="toggleLayer('layer_RedVialPRC_15'); togglePresionado(this)"><img src="legend/RedVialPRC_15_2.png" alt="#"> Red Vial PRC</button>
+                            <button class="btn" onclick="toggleLayer('layer_redPeaton_14'); togglePresionado(this)"><img src="legend/redPeaton_14.png" alt="#"> Red Peatón</button>
+                            <button class="btn" onclick="toggleLayer('layer_redAuto_13'); togglePresionado(this)"><img src="legend/redAuto_13.png" alt="#"> Red Auto</button>
+                            <button class="btn" onclick="toggleLayer('layer_Pavimento_12'); togglePresionado(this)"><img src="legend/Pavimento_12.png" alt="#"> Pavimento</button>
+                            <button class="btn" onclick="toggleLayer('layer_ParaderoTP_11'); togglePresionado(this)"><img src="legend/ParaderoTP_11_Bueno0.png" alt="#"> ParaderoTP</button>
+                            <button class="btn" onclick="toggleLayer('layer_LineasTP_10'); togglePresionado(this)"><img src="legend/LineasTP_10_2.png" alt="#"> Lineas TP</button>
+                        </div>
+                        <div class="categories">
+                            <div class="category-title"><p>Example 5</p></div>
+                            <button class="btn" onclick="toggleLayer('layer_LneaFerrea_9'); togglePresionado(this)"><img src="legend/RutasTP_16.png" alt="#"> Línea Férrea</button>
+                            <button class="btn" onclick="toggleLayer('layer_InterSema_8'); togglePresionado(this)"><img src="legend/InterSema_8.png" alt="#"> InterSema</button>
+                            <button class="btn" onclick="toggleLayer('layer_InterPrio_7'); togglePresionado(this)"><img src="legend/InterPrio_7.png" alt=""> InterPrio</button>
+                            <button class="btn" onclick="toggleLayer('layer_EstTren_6'); togglePresionado(this)"><img src="legend/EstTren_6.png" alt="#"> EstTren</button>
+                            <button class="btn" onclick="toggleLayer('layer_EstacioBici_5'); togglePresionado(this)"><img src="legend/EstacioBici_5.png" alt="#"> EstacioBici</button>
+                            <button class="btn" onclick="toggleLayer('layer_EstacionaVia_4'); togglePresionado(this)"><img src="legend/EstacionaVia_4_Gratuito0.png" alt="#"> EstacionaVia</button>
+                            <button class="btn" onclick="toggleLayer('layer_CruceFerreo_3'); togglePresionado(this)"><img src="legend/CruceFerreo_3.png" alt="#"> Cruce Férreo</button>
+                            <button class="btn" onclick="toggleLayer('layer_Cicloruta_2'); togglePresionado(this)"><img src="legend/Cicloruta_2.png" alt="#"> Ciclo Ruta</button>
+                            <button class="btn" onclick="toggleLayer('layer_Accidentes_1'); togglePresionado(this)"><img src="legend/Accidentes_1.png" alt="#"> Accidentes</button>
+                        </div>
+                    </div>
+                    <div id="map"></div>
+                </section>
+                <section class="bottom-chart-section">
+
+                </section>
             </div>
-            <div id="map"></div>
-        </section>
+        </div>
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
         <script src="js/L.Control.Layers.Tree.min.js"></script>
@@ -197,12 +177,14 @@
         <script src="data/Pavimentos_45.js"></script>
         <script src="data/ViasdeEvacuacin_46.js"></script>
         <script src="data/PuntosdeEncuentro_47.js"></script>
+        <script src="js/graphs.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
         }).fitBounds([[-36.75273044075617,-73.19587455744133],[-36.690207151397544,-73.03530484914951]]);
+        map.setZoom(14);
         var hash = new L.Hash(map);
-        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a> &middot; <a href="https://www.openstreetmap.org/copyright"/>© OpenStreetMap</a>');
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps" target="_blank">Leaflet</a> &middot; <a href="https://qgis.org" target="_blank">QGIS</a> &middot; <a href="https://www.openstreetmap.org/copyright" target="_blank"/>© OpenStreetMap</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
         function removeEmptyRowsFromPopupContent(content, feature) {
          var tempDiv = document.createElement('div');
