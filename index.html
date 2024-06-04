@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
         <title>Solutiva Consultores - P178-TEL</title>
     </head>
     <body class="overpass-font">
@@ -37,13 +37,13 @@
         <div class="total-container">
             <section class="left-graph-section">
                 <div class="left-charts">
-                    <canvas id="chartOne"></canvas>
+                    <div id="chartOne"></div>
                 </div>
                 <div class="left-charts">
-                    <canvas id="chartTwo"></canvas>
+                    <div id="chartTwo"></div>
                 </div>
                 <div class="left-charts">
-                    <canvas id="chartThree"></canvas>
+                    <div id="chartThree"></div>
                 </div>
             </section>
             <div class="right-subcontainer">
@@ -189,7 +189,25 @@
         <script src="data/Pavimentos_45.js"></script>
         <script src="data/ViasdeEvacuacin_46.js"></script>
         <script src="data/PuntosdeEncuentro_47.js"></script>
-        <script src="js/graphs.js"></script>
+        <script>
+            let presionado = false;
+
+            function togglePresionado(button) {
+                button.classList.toggle('presionado');
+            }
+
+
+            function actualizarEstilo() {
+            const btn = document.getElementsByClassName('btn');
+            if (presionado) {
+                btn.style.backgroundColor = 'gray';
+                btn.style.color = 'black'; 
+            } else {
+                btn.style.backgroundColor = 'white'; 
+                btn.style.color = 'black'; 
+            }
+            }
+        </script>
         <script>
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
@@ -563,12 +581,14 @@
                 case 'Gratuito':
                     return {
                 pane: 'pane_EstacionaVia_4',
+                color: 'rgba( 47, 80, 210, 1.00 )',
                 interactive: true,
             }
                     break;
                 case 'Tarifado':
                     return {
                 pane: 'pane_EstacionaVia_4',
+                color: 'rgba( 68, 208, 33, 1.00 )',
                 interactive: true,
             }
                     break;
@@ -2790,8 +2810,8 @@
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
+                lineCap: 'round',
+                lineJoin: 'round',
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
@@ -2806,8 +2826,8 @@
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
+                lineCap: 'round',
+                lineJoin: 'round',
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
@@ -3116,9 +3136,46 @@
             popup.setContent(updatedContent);
         }
 
-        function style_Veredas_43_0() {
-            return {};
-        }
+        function style_Veredas_43_0(feature) {
+            switch(String(feature.properties['Estado'])) {
+                case 'Bueno':
+                    return {
+                pane: 'pane_Veredas_43',
+                opacity: 1,
+                color: 'rgba( 92, 239, 109, 1.00 )',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                interactive: true,
+            }
+                    break;
+                case 'Regular':
+                    return {
+                pane: 'pane_Veredas_43',
+                opacity: 1,
+                color: 'rgba( 203, 154, 76, 1.00 )',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Veredas_43',
+                opacity: 1,
+                color: 'rgba( 211, 117, 200, 1.00 )',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                interactive: true,
+            }
+                    break;
+            }}
+
         map.createPane('pane_Veredas_43');
         map.getPane('pane_Veredas_43').style.zIndex = 443;
         map.getPane('pane_Veredas_43').style['mix-blend-mode'] = 'normal';
@@ -3146,7 +3203,13 @@
         }
 
         function style_Escaleras_44_0() {
-            return {};
+            return {
+                opacity: 1,
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                color: 'rgba( 130, 130, 130, 1.00 ) ',
+                weight: 3
+            };
         }
         map.createPane('pane_Escaleras_44');
         map.getPane('pane_Escaleras_44').style.zIndex = 444;
@@ -3179,10 +3242,47 @@
             var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
             popup.setContent(updatedContent);
         }
+        
+        function style_Pavimentos_45_0(feature) {
+            switch(String(feature.properties['Estado'])) {
+                case 'Bueno':
+                    return {
+                pane: 'pane_Pavimentos_45',
+                opacity: 1,
+                color: 'rgba(26,200,142,1.00)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                interactive: true,
+            }
+                    break;
+                case 'Regular':
+                    return {
+                pane: 'pane_Pavimentos_45',
+                opacity: 1,
+                color: 'rgba( 215, 113, 149, 1.00 )',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Pavimentos_45',
+                opacity: 1,
+                color: 'rgba( 50, 18, 210, 1.00 )',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                interactive: true,
+            }
+                    break;
+            }}
 
-        function style_Pavimentos_45_0() {
-            return {};
-        }
         map.createPane('pane_Pavimentos_45');
         map.getPane('pane_Pavimentos_45').style.zIndex = 445;
         map.getPane('pane_Pavimentos_45').style['mix-blend-mode'] = 'normal';
@@ -3306,25 +3406,6 @@
         });
         </script>
         <script>
-            let presionado = false;
-
-            function togglePresionado(button) {
-                button.classList.toggle('presionado');
-            }
-
-
-            function actualizarEstilo() {
-            const btn = document.getElementsByClassName('btn');
-            if (presionado) {
-                btn.style.backgroundColor = 'gray';
-                btn.style.color = 'black'; 
-            } else {
-                btn.style.backgroundColor = 'white'; 
-                btn.style.color = 'black'; 
-            }
-            }
-
-
             let bottomInformation1 = document.getElementById("bottom-information1");
             let bottomResult1 = document.getElementById("bottom-result1");
 
@@ -3335,39 +3416,236 @@
             let bottomResult3 = document.getElementById("bottom-result3");
 
 
-
+            function createChart(chart, y, x, title){
+                const xArray = x;
+                const yArray = y;
+                const layout = {title: title, margin: {pad:10}};
+                const myPlot = chart;
+                const data = [{
+                    x:xArray,
+                    y:yArray,
+                    type:"bar",
+                    orientation:"h",
+                    marker: {color:"c1d84e"}
+                }];
+                Plotly.newPlot(myPlot, data, layout);
+            }
 
 
             function toggleLayer(layerName) {
             var layer = window[layerName];
             if (map.hasLayer(layer)) {
                 map.removeLayer(layer);
-                bottomInformation1.textContent = "";
-                bottomResult1.textContent = "";
-                bottomInformation2.textContent = "";
-                bottomResult2.textContent = "";
-                bottomInformation3.textContent = "";
-                bottomResult3.textContent = "";
+                bottomInformation1.textContent = '';
+                bottomResult1.textContent = '';
+                bottomInformation2.textContent = '';
+                bottomResult2.textContent = '';
+                bottomInformation3.textContent = '';
+                bottomResult3.textContent = '';
+                Plotly.purge('chartOne')
+                Plotly.purge('chartTwo')
+                Plotly.purge('chartThree')
+
             } else {
                 map.addLayer(layer);
-                bottomInformation1.textContent = "";
-                bottomResult1.textContent = "";
-                bottomInformation1.textContent = "";
-                bottomResult1.textContent = "";
-                bottomInformation2.textContent = "";
-                bottomResult2.textContent = "";
-                bottomInformation3.textContent = "";
-                bottomResult3.textContent = "";
-                if (layerName == 'layer_Pavimentos_45'){
-                    bottomInformation1.textContent = "Pavimento:"
-                    bottomResult1.textContent = "N° de Pavimento Total = 862 \n Pavimento Bueno = 169 \n Pavimento Regular = 392 \n Pavimento Malo = 272"
-                    
-                    bottomInformation2.textContent = "Hormigón:"
-                    bottomResult2.textContent = "N° de Pavimento Total = 640 \n Hormigón Bueno = 130 \n Hormigón Regular = 285 \n Hormigón Malo = 225"
+                bottomInformation1.textContent = '';
+                bottomResult1.textContent = '';
+                bottomInformation1.textContent = '';
+                bottomResult1.textContent = '';
+                bottomInformation2.textContent = '';
+                bottomResult2.textContent = '';
+                bottomInformation3.textContent = '';
+                bottomResult3.textContent = '';
+                Plotly.purge('chartOne')
+                Plotly.purge('chartTwo')
+                Plotly.purge('chartThree')
 
-                    bottomInformation3.textContent = "Asfalto:"
-                    bottomResult3.textContent = "N° de Asfalto Total = 193 \n Asfalto Bueno = 39 \n Asfalto Regular = 107 \n Asfalto Malo = 47"
+                if (layerName == 'layer_PuntosdeEncuentro_47'){
+                    bottomInformation1.textContent = "Puntos de Encuentro:";
+                    bottomResult1.textContent = "Puntos de Encuentro Totales = 15";
                 }
+
+                if (layerName == 'layer_Pavimentos_45'){
+                    bottomInformation1.textContent = "Pavimento:";
+                    bottomResult1.textContent = "N° de Pavimento Total = 862 \n Pavimento Bueno = 169 \n Pavimento Regular = 392 \n Pavimento Malo = 272";
+                    const y1 = ['Malo', 'Regular', 'Bueno'];
+                    const x1 = [272, 392, 169];
+                    const title1 = 'Pavimento';
+
+                    bottomInformation2.textContent = "Hormigón:";
+                    bottomResult2.textContent = "N° de Pavimento Total = 640 \n Hormigón Bueno = 130 \n Hormigón Regular = 285 \n Hormigón Malo = 225";
+                    const y2 = ['Malo', 'Regular', 'Bueno'];
+                    const x2 = [225, 285, 130];
+                    const title2 = 'Hormigón';
+
+                    bottomInformation3.textContent = "Asfalto:";
+                    bottomResult3.textContent = "N° de Asfalto Total = 193 \n Asfalto Bueno = 39 \n Asfalto Regular = 107 \n Asfalto Malo = 47";
+                    const y3 = ['Malo', 'Regular', 'Bueno'];
+                    const x3 = [47, 107, 39];
+                    const title3 = 'Asfalto';
+
+                    createChart(chartOne, y1, x1, title1);
+                    createChart(chartTwo, y2, x2, title2);
+                    createChart(chartThree, y3, x3, title3);
+
+                }
+                if (layerName == 'layer_Veredas_43'){
+                    bottomInformation1.textContent = "Veredas:";
+                    bottomResult1.textContent = "N° de Veredas Total = 1504 \n Vereda Buena = 380 \n Vereda Regular = 297 \n Vereda Mala = 827";
+
+                    const y1 = ['Mala', 'Regular', 'Buena'];
+                    const x1 = [827, 297, 380];
+                    const title1 = 'Veredas';
+
+                    createChart(chartOne, y1, x1, title1);
+                }
+
+                if (layerName == 'layer_AreasVerdes_42'){
+                    bottomInformation1.textContent = "Áreas Verdes:";
+                    bottomResult1.textContent = "N° de Áreas Verdes = 96";
+
+                    bottomInformation2.textContent = "Área Verde Urbana:";
+                    bottomResult2.textContent = "95";
+
+                    bottomInformation3.textContent = "Parque Tumbes:";
+                    bottomResult3.textContent = "1";
+                }
+
+                if (layerName == 'layer_Equipamiento_40'){
+                    var imgComercio = document.createElement('img');
+                    imgComercio.src = 'legend/Equipamiento_40_Comercio0.png'; imgComercio.alt = '#'
+                    bottomInformation1.textContent = "Equipamiento:";
+                    bottomResult1.textContent = "N° Total de Equipamiento = 154 \n Equipamiento Comercio = 12 \n Equipamiento Cultural = 1 \n Equipamiento Deportes = 14";
+                    
+
+                    bottomResult2.textContent = "Equipamiento Educacional = 41 \n Equipamiento Industrial = 25 \n Equipamiento Patrimonial = 23 \n Equipamiento Salud = 9";
+                    bottomResult3.textContent = "Equipamiento Seguridad 4 \n Equipamiento Servicios = 12 \n Equipamiento Social = 6 \n Equipamiento Transporte = 7";
+                }
+
+                if (layerName == 'layer_TorresAT_36'){
+                    bottomInformation1.textContent = "Torres AT:";
+                    bottomResult1.textContent = "N° Total de Torres AT = 87";
+                }
+
+                if (layerName == 'layer_VERTIENTESOSM_34'){
+                    bottomInformation1.textContent = "Vertientes OSM:";
+                    bottomResult1.textContent = "N° Total de Vertientes OSM = 29";
+                }
+
+                if (layerName == 'layer_VERTIENTESIDOM_33'){
+                    bottomInformation1.textContent = "Vertientes IDOM:";
+                    bottomResult1.textContent = "N° Total de Vertientes IDOM = 18";
+                }
+
+                if (layerName == 'layer_INFRAESTAGUASSERVIDAS_28'){
+                    bottomInformation1.textContent = "Infraestructura de Aguas Servidas:";
+                    bottomResult1.textContent = "N° Total de Infraestructura \n de Aguas Servidas = 8";
+                }
+
+                if (layerName == 'layer_INFRAESTAGUAPOTABLE_27'){
+                    bottomInformation1.textContent = "Infraestructura de Agua Potable:";
+                    bottomResult1.textContent = "N° Total de Infraestructura \n de Agua Potable = 12";
+                }
+
+                if (layerName == 'layer_Hitos_Google_25'){
+                    bottomInformation1.textContent = "Hitos Google:";
+                    bottomResult1.textContent = "N° Total de Hitos de Google = 66";
+                }
+
+                if (layerName == 'layer_ESTACIONESDETREN_24'){
+                    bottomInformation1.textContent = "Estaciones de Tren:";
+                    bottomResult1.textContent = "N° Total de Estaciones de Tren = 25";
+                }
+
+                if (layerName == 'layer_Campamentos_23'){
+                    bottomInformation1.textContent = "Campamentos:";
+                    bottomResult1.textContent = "N° Total de Campamentos = 20";
+                }
+
+                if (layerName == 'layer_SenaVert_17'){
+                    bottomInformation1.textContent = "SenaVert:";
+                    bottomResult1.textContent = "N° Total de SenaVert = 431";
+                }
+
+                if (layerName == 'layer_RedVialPRC_15'){
+                    bottomInformation1.textContent = "Red Vial PRC:";
+                    bottomResult1.textContent = "N° Total de Redes Viales PRC = 462";
+                    
+                    bottomInformation2.textContent = "Red Vial Troncal"
+                    bottomResult2.textContent = "8"
+
+                    bottomInformation3.textContent = "Vía de Servicio"
+                    bottomResult3.textContent = "54"
+
+                    const y1 = ['Vía de Servicio', 'Troncal'];
+                    const x1 = [54, 8];
+                    const title1 = 'Red Vial PRC';
+
+                    createChart(chartOne, y1, x1, title1);
+                }
+
+                if (layerName == 'layer_ParaderoTP_11'){
+                    bottomInformation1.textContent = "Paradero TP:";
+                    bottomResult1.textContent = "N° Total de Paradero TP = 90";
+
+                    bottomResult2.textContent = "Paradero Bueno = 52 \n Paradero Regular = 17";
+                    bottomResult3.textContent = "Paradero Malo = 6 \n Paradero sin Refugio = 15";
+                }
+
+                if (layerName == 'layer_InterSema_8'){
+                    bottomInformation1.textContent = "InterSema:";
+                    bottomResult1.textContent = "N° Total de InterSema = 11";
+                }
+
+                if (layerName == 'layer_InterPrio_7'){
+                    bottomInformation1.textContent = "InterPrio:";
+                    bottomResult1.textContent = "N° Total de InterPrio = 99";
+                }
+
+                if (layerName == 'layer_EstacioBici_5'){
+                    bottomInformation1.textContent = "Estacionamiento de Bicicleta:";
+                    bottomResult1.textContent = "N° Total de Estacionamientos \n de Bicicleta = 23";
+                }
+
+                if (layerName == 'layer_EstacionaVia_4'){
+                    bottomInformation1.textContent = "Estacionamiento Vía:";
+                    bottomResult1.textContent = "N° Total de Estacionamientos Vía = 153";
+
+                    bottomInformation2.textContent = "Gratuito"
+                    bottomResult2.textContent = "3"
+
+                    bottomInformation3.textContent = "Tarifado"
+                    bottomResult3.textContent = "150"
+
+                    const y1 = ['Gratuito', 'Tarifado'];
+                    const x1 = [3, 150];
+                    const title1 = 'Estacionamiento Vía';
+
+                    createChart(chartOne, y1, x1, title1)
+                }
+
+                if (layerName == 'layer_CruceFerreo_3'){
+                    bottomInformation1.textContent = "Cruce Férreo:";
+                    bottomResult1.textContent = "N° Total de Cruces Férreos = 11";
+                }
+
+                if (layerName == 'layer_Accidentes_1'){
+                    bottomInformation1.textContent = "Accidentes:";
+                    bottomResult1.textContent = "N° Total de Accidentes = 6716";
+
+                    bottomInformation2.textContent = "Lesionados / Ilesos"
+                    bottomResult2.textContent = "N° Total de Lesiones Graves = 567 \n N° Total de Lesiones Leves = 2321 \n N° Total de Ilesos = 907"
+
+                    bottomInformation3.textContent = "Fallecidos";
+                    bottomResult3.textContent = "N° Total de Fallecidos 93"
+
+                    const y1 = ['Fallecidos', 'Graves', 'Leves' ,'Ilesos', 'Accidentes'];
+                    const x1 = [93, 567, 2321, 907, 6716];
+                    const title1 = 'Red Vial PRC';
+
+                    createChart(chartOne, y1, x1, title1);
+                }
+
             }
         }
         </script>
