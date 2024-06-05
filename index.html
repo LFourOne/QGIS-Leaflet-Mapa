@@ -110,6 +110,7 @@
                             <button class="btn" onclick="toggleLayer('layer_CruceFerreo_3'); togglePresionado(this)"><img src="legend/CruceFerreo_3.png" alt="#"> Cruce Férreo</button>
                             <button class="btn" onclick="toggleLayer('layer_Cicloruta_2'); togglePresionado(this)"><img src="legend/Cicloruta_2.png" alt="#"> Ciclo Ruta</button>
                             <button class="btn" onclick="toggleLayer('layer_Accidentes_1'); togglePresionado(this)"><img src="legend/Accidentes_1.png" alt="#"> Accidentes</button>
+                            <button class="btn" onclick="toggleLayer('layer_kernel_accidentes_48'); togglePresionado(this)"><img src="legend/Accidentes_1.png" alt="#"> Raster de Calor</button>
                         </div>
                     </div>
                     <div id="map"></div>
@@ -2996,7 +2997,7 @@
                     feature: feature,
                     variables: {}
                 };
-                return L.shapeMarker(latlng, style_Equipamiento_40_0(feature));
+                return L.circleMarker(latlng, style_Equipamiento_40_0(feature));
             },
         });
         bounds_group.addLayer(layer_Equipamiento_40);
@@ -3404,6 +3405,21 @@
         map.on("layerremove", function(){
             resetLabels([layer_Campamentos_23]);
         });
+
+        map.createPane('pane_kernel_accidentes_48');
+        map.getPane('pane_kernel_accidentes_48').style.zIndex = 401;
+        var img_kernel_accidentes_48 = 'data/kernel_accidentes_48.png';
+        var img_bounds_kernel_accidentes_48 = [[-36.80091604612169,-73.16134077129607],[-36.62319822478103,-73.03699932327389]];
+        var layer_kernel_accidentes_48 = new L.imageOverlay(img_kernel_accidentes_48,
+                                              img_bounds_kernel_accidentes_48,
+                                              {pane: 'pane_kernel_accidentes_48'});
+        bounds_group.addLayer(layer_kernel_accidentes_48);
+        setBounds();
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
         </script>
         <script>
             let bottomInformation1 = document.getElementById("bottom-information1");
@@ -3467,19 +3483,19 @@
 
                 if (layerName == 'layer_Pavimentos_45'){
                     bottomInformation1.textContent = "Pavimento:";
-                    bottomResult1.textContent = "N° de Pavimento Total = 862 \n Pavimento Bueno = 169 \n Pavimento Regular = 392 \n Pavimento Malo = 272";
+                    bottomResult1.innerHTML = "N° de Pavimento Total = 862 \n <img src='legend/LineasTP_10_2.png' alt='#'> Pavimento Bueno = 169 \n <img src='legend/QUEBRADASPMALL_32.png' alt='#'>  Pavimento Regular = 392 \n <img src='legend/RutasCamiones_38.png' alt='#'> Pavimento Malo = 272";
                     const y1 = ['Malo', 'Regular', 'Bueno'];
                     const x1 = [272, 392, 169];
                     const title1 = 'Pavimento';
 
                     bottomInformation2.textContent = "Hormigón:";
-                    bottomResult2.textContent = "N° de Pavimento Total = 640 \n Hormigón Bueno = 130 \n Hormigón Regular = 285 \n Hormigón Malo = 225";
+                    bottomResult2.innerHTML = "N° de Pavimento Total = 640 \n <img src='legend/LineasTP_10_2.png' alt='#'> Hormigón Bueno = 130 \n <img src='legend/QUEBRADASPMALL_32.png' alt='#'> Hormigón Regular = 285 \n <img src='legend/RutasCamiones_38.png' alt='#'> Hormigón Malo = 225";
                     const y2 = ['Malo', 'Regular', 'Bueno'];
                     const x2 = [225, 285, 130];
                     const title2 = 'Hormigón';
 
                     bottomInformation3.textContent = "Asfalto:";
-                    bottomResult3.textContent = "N° de Asfalto Total = 193 \n Asfalto Bueno = 39 \n Asfalto Regular = 107 \n Asfalto Malo = 47";
+                    bottomResult3.innerHTML = "N° de Asfalto Total = 193 \n <img src='legend/LineasTP_10_2.png' alt='#'> Asfalto Bueno = 39 \n <img src='legend/QUEBRADASPMALL_32.png' alt='#'> Asfalto Regular = 107 \n <img src='legend/RutasCamiones_38.png' alt='#'> Asfalto Malo = 47";
                     const y3 = ['Malo', 'Regular', 'Bueno'];
                     const x3 = [47, 107, 39];
                     const title3 = 'Asfalto';
@@ -3491,7 +3507,7 @@
                 }
                 if (layerName == 'layer_Veredas_43'){
                     bottomInformation1.textContent = "Veredas:";
-                    bottomResult1.textContent = "N° de Veredas Total = 1504 \n Vereda Buena = 380 \n Vereda Regular = 297 \n Vereda Mala = 827";
+                    bottomResult1.innerHTML = "N° de Veredas Total = 1504 \n <img src='legend/RedAt_37.png' alt='#'> Vereda Buena = 380 \n <img src='legend/Pavimento_12.png' alt='#'> Vereda Regular = 297 \n <img src='legend/QUEBRADASPMALL_32.png' alt='#'> Vereda Mala = 827";
 
                     const y1 = ['Mala', 'Regular', 'Buena'];
                     const x1 = [827, 297, 380];
@@ -3505,21 +3521,21 @@
                     bottomResult1.textContent = "N° de Áreas Verdes = 96";
 
                     bottomInformation2.textContent = "Área Verde Urbana:";
-                    bottomResult2.textContent = "95";
+                    bottomResult2.innerHTML = "<img src='legend/AreasVerdes_42_AreaVerdeUrbana0.png' alt='Área Verde'> 95";
 
                     bottomInformation3.textContent = "Parque Tumbes:";
-                    bottomResult3.textContent = "1";
+                    bottomResult3.innerHTML = "<img src='legend/AreasVerdes_42_ParqueTumbes1.png' alt='Área Verde'> 1";
                 }
 
                 if (layerName == 'layer_Equipamiento_40'){
                     var imgComercio = document.createElement('img');
                     imgComercio.src = 'legend/Equipamiento_40_Comercio0.png'; imgComercio.alt = '#'
                     bottomInformation1.textContent = "Equipamiento:";
-                    bottomResult1.textContent = "N° Total de Equipamiento = 154 \n Equipamiento Comercio = 12 \n Equipamiento Cultural = 1 \n Equipamiento Deportes = 14";
+                    bottomResult1.innerHTML = "N° Total de Equipamiento = 154 \n <img src='legend/Equipamiento_40_Comercio0.png' alt='#'> Equipamiento Comercio = 12 \n <img src='legend/Equipamiento_40_Cultural1.png' alt='#'> Equipamiento Cultural = 1 \n <img src='legend/Equipamiento_40_Deportes2.png' alt='#'> Equipamiento Deportes = 14";
                     
 
-                    bottomResult2.textContent = "Equipamiento Educacional = 41 \n Equipamiento Industrial = 25 \n Equipamiento Patrimonial = 23 \n Equipamiento Salud = 9";
-                    bottomResult3.textContent = "Equipamiento Seguridad 4 \n Equipamiento Servicios = 12 \n Equipamiento Social = 6 \n Equipamiento Transporte = 7";
+                    bottomResult2.innerHTML = "<img src='legend/Equipamiento_40_Educacional3.png' alt='#'> Equipamiento Educacional = 41 \n <img src='legend/Equipamiento_40_Industrial4.png' alt='#'> Equipamiento Industrial = 25 \n <img src='legend/Equipamiento_40_Patrimonial5.png' alt='#'> Equipamiento Patrimonial = 23 \n <img src='legend/Equipamiento_40_Salud6.png' alt='#'> Equipamiento Salud = 9";
+                    bottomResult3.innerHTML = "<img src='legend/Equipamiento_40_Seguridad7.png' alt='#'> Equipamiento Seguridad 4 \n <img src='legend/Equipamiento_40_Servicios8.png' alt='#'> Equipamiento Servicios = 12 \n <img src='legend/Equipamiento_40_Social9.png' alt='#'> Equipamiento Social = 6 \n <img src='legend/Equipamiento_40_Transporte10.png' alt='#'> Equipamiento Transporte = 7";
                 }
 
                 if (layerName == 'layer_TorresAT_36'){
@@ -3572,10 +3588,10 @@
                     bottomResult1.textContent = "N° Total de Redes Viales PRC = 462";
                     
                     bottomInformation2.textContent = "Red Vial Troncal"
-                    bottomResult2.textContent = "8"
+                    bottomResult2.innerHTML = "<img src='legend/RedVialPRC_15_Troncal0.png' alt='#'> 8"
 
                     bottomInformation3.textContent = "Vía de Servicio"
-                    bottomResult3.textContent = "54"
+                    bottomResult3.innerHTML = "<img src='legend/RedVialPRC_15_VíadeServicio1.png' alt='#'> 54"
 
                     const y1 = ['Vía de Servicio', 'Troncal'];
                     const x1 = [54, 8];
@@ -3588,8 +3604,8 @@
                     bottomInformation1.textContent = "Paradero TP:";
                     bottomResult1.textContent = "N° Total de Paradero TP = 90";
 
-                    bottomResult2.textContent = "Paradero Bueno = 52 \n Paradero Regular = 17";
-                    bottomResult3.textContent = "Paradero Malo = 6 \n Paradero sin Refugio = 15";
+                    bottomResult2.innerHTML = "<img src='legend/ParaderoTP_11_Bueno0.png' alt='#'> Paradero Bueno = 52 \n <img src='legend/ParaderoTP_11_Regular1.png' alt='#'> Paradero Regular = 17";
+                    bottomResult3.innerHTML = "<img src='legend/ParaderoTP_11_Malo2.png' alt='#'> Paradero Malo = 6 \n <img src='legend/ParaderoTP_11_SinRefugio3.png' alt='#'> Paradero sin Refugio = 15";
                 }
 
                 if (layerName == 'layer_InterSema_8'){
@@ -3641,7 +3657,7 @@
 
                     const y1 = ['Fallecidos', 'Graves', 'Leves' ,'Ilesos', 'Accidentes'];
                     const x1 = [93, 567, 2321, 907, 6716];
-                    const title1 = 'Red Vial PRC';
+                    const title1 = 'Accidentes';
 
                     createChart(chartOne, y1, x1, title1);
                 }
